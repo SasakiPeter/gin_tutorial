@@ -1,0 +1,25 @@
+FROM golang:1.15.2-alpine as build-reflex
+RUN apk update && \
+  apk upgrade && \
+  apk add bash git && \
+  rm -rf /var/cache/apk/*
+
+RUN go get github.com/cespare/reflex
+
+FROM golang:1.15.2-alpine
+COPY --from=build-reflex /go/bin/reflex /go/bin/reflex
+
+RUN apk update && \
+  apk upgrade && \
+  apk add bash git && \
+  rm -rf /var/cache/apk/*
+
+ARG APP_ROOT=/app
+
+WORKDIR $APP_ROOT
+COPY go.mod go.sum $APP_ROOT
+RUN go mod download
+
+COPY . $APP_ROOT
+EXPOSE 8080
+CMD ["go", "run", "main.go"]
