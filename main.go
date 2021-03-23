@@ -2,15 +2,15 @@ package main
 
 import "github.com/gin-gonic/gin"
 
-func main()  {
+func main() {
 	r := gin.Default()
-	r.GET("/", func(c *gin.Context){
+	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "Hello Golang World!",
 		})
 	})
 
-	r.GET("/health_check", func(c *gin.Context){
+	r.GET("/health_check", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "ok",
 		})
